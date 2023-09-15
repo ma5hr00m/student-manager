@@ -12,11 +12,17 @@ class userModel {
     }
 
     static async authUser(username, password) {
-        const realPassword = await user.findOne({
+        const realUser = await user.findOne({
             where: {
                 username
             }
         });
+
+        if (!realUser) {
+            return false;
+        }
+
+        const realPassword = realUser.password;
 
         if (password === realPassword) {
             return true;
