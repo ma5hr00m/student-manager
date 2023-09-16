@@ -77,14 +77,15 @@ class studentController {
         try {    
             const name = ctx.params.name;
 
-            const result = await studentModel.searchStudent(
+            const students = await studentModel.searchStudent(
                 name
             );
+            
             ctx.response.status = 200;
             ctx.body = {
                 status: 200,
                 message: 'success',
-                data: result
+                data: students
             };
 
             console.log('[SEARCH] ' + name);

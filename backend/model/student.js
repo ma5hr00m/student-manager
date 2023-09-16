@@ -30,7 +30,7 @@ class studentModel {
     }
 
     static async searchStudent(name) {
-        const result = await student.findOne({
+        const result = await student.findAll({
             where: {
                 name
             }
