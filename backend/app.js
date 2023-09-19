@@ -5,7 +5,10 @@ const InitManager = require('./core/init');
 
 const app = new Koa();
 
-app.use(cors());
+app.use(cors({
+    methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH']
+}));
+
 app.use(bodyParser());
 InitManager.initCore(app);
 

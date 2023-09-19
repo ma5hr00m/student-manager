@@ -21,12 +21,21 @@ class studentModel {
     }
 
     static async deleteStudent(id) {
+        // Delete the student
         const result = await student.destroy({
             where: {
                 id
             }
         });
-        return result;
+    
+        if (result) {
+            // If the delete operation was successful, query the remaining students
+            const remainingStudents = await student.findAll();
+    
+            return remainingStudents;
+        } else {
+            throw new Error('Delete operation failed');
+        }
     }
 
     static async searchStudent(name) {

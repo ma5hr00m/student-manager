@@ -52,17 +52,25 @@ class studentController {
         try {    
             const studentId = ctx.params.id;
 
-            const result = await studentModel.deleteStudent(
-                studentId
-            );
-            ctx.response.status = 200;
-            ctx.body = {
-                status: 200,
-                message: 'success',
-                data: result
-            };
+            const result = await studentModel.deleteStudent(studentId);
 
-            console.log('[DELETE] ' + id);
+            // Check the result of the delete operation
+            if (result) {
+                ctx.response.status = 200;
+                ctx.body = {
+                    status: 200,
+                    message: 'success',
+                    data: result
+                };
+
+                console.log('[DELETE] ' + studentId);
+            } else {
+                // Throw an error if the delete operation failed
+                throw {
+                    status: 500,
+                    message: 'Delete operation failed'
+                };
+            }
         } catch (error) {
             ctx.response.status = error.status || 500;
             ctx.body = {
@@ -72,6 +80,7 @@ class studentController {
             };
         }
     }
+
 
     static async search(ctx) {
         try {    
@@ -106,7 +115,7 @@ class studentController {
             const name = data.name;
             const age = data.age;
             const major = data.major;
-
+    
             const result = await studentModel.updateStudent(studentId, name, age, major);
             ctx.response.status = 200;
             ctx.body = {
@@ -114,8 +123,9 @@ class studentController {
                 message: 'success',
                 data: result
             };
-
-            console.log('[UPDATE] ' + id);
+    
+            console.log('[UPDATE] ' + studentId);
+    
         } catch (error) {
             ctx.response.status = error.status || 500;
             ctx.body = {
@@ -125,6 +135,7 @@ class studentController {
             };
         }
     }
+    
 }
 
 module.exports = studentController;
