@@ -1,0 +1,24 @@
+@font-face {
+    font-family: lxgw-regular;
+    src: url(../fonts/LXGWWenKaiGB-Regular.ttf);
+}
+
+.lxgwr {
+    font-family: lxgw-regular;
+}
+
+:root, body, #root {
+    position: relative;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+}
+
+
+
+.login-bg {
+    background-image: url(../images/login-background.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
