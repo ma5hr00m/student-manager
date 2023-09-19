@@ -117,8 +117,8 @@ export default function Home() {
                         {t("title")}
                     </h2>
                     <div className="flex">
-                        <button className="mr-5 w9 h9 bg-[#2a2a2aff] border-none flex-c-c cursor-pointer" onClick={handleTheme}>
-                            <MdDarkMode className="text-[#b7b7b7ff] text-4 hover:text-[#4aab1fff]" />
+                        <button className="mr-5 w9 h9 bg-[#2a2a2aff] border-none flex-c-c cursor-pointer" onClick={handleTheme} disabled>
+                            <MdDarkMode className="text-[#b7b7b7ff] text-4" />
                         </button>
                         <button className="mr-5 w9 h9 bg-[#2a2a2aff] border-none flex-c-c cursor-pointer" onClick={handleLanguage}>
                             <MdLanguage className="text-[#b7b7b7ff] text-5 hover:text-[#4aab1fff]" />
