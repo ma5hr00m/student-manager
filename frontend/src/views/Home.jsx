@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAtom } from "jotai";
-import { addBoxAtom, editBoxAtom, studentIdAtom, studentNameAtom, studentAgeAtom, studentMajorAtom } from "../store/jotai";
+import { themeAtom, addBoxAtom, editBoxAtom, studentIdAtom, studentNameAtom, studentAgeAtom, studentMajorAtom } from "../store/jotai";
 import { MdDarkMode, MdLightMode, MdLanguage, MdLogout, MdRefresh, MdAdd, MdImportExport, MdSearch } from "react-icons/md";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 
 import AddBox from "../components/AddBox";
@@ -15,10 +16,22 @@ export default function Home() {
     const [addBox, setAddBox] = useAtom(addBoxAtom);
     const [editBox, setEditBox] = useAtom(editBoxAtom);
 
+    const [theme , setTheme] = useAtom(themeAtom);
     const [ , setStudentId] = useAtom(studentIdAtom);
     const [ , setStudentName] = useAtom(studentNameAtom);
     const [ , setStudentAge] = useAtom(studentAgeAtom);
     const [ , setStudentMajor] = useAtom(studentMajorAtom);
+    
+    const { i18n } = useTranslation();
+    const { t } = useTranslation();
+
+    const handleTheme = async () => {
+        setTheme(theme === 'light' ? 'dark' : 'light');
+    }
+
+    const handleLanguage = async () => {
+        i18n.changeLanguage(i18n.language === 'en' ? 'zh' : 'en');
+    }
 
     // Func: direct to /login, clear jwt-token in localstorage
     async function handleLogout() {
@@ -64,7 +77,7 @@ export default function Home() {
 
     // Func: switch addBox Atom, display AddBox components
     const handleAddBox = async () => {
-        setAddBox(addBox === '' ? 'hidden' : '');
+        setAddBox(addBox === ' ' ? 'hidden' : ' ');
     }
 
     // Func: request api, delete item with Id parameter
@@ -97,21 +110,23 @@ export default function Home() {
 
     return (
         <div className='wh-full flex-c-c login-bg'>
-            <div className=""></div>
-            <main className="relative flex-col h-200 bg-[#2a2a2aff] overflow-hidden">
-                <div className="relative z-100 flex py5 px10 items-center bg-[#1a1a1aff]">
-                    <h2 className="m0 mr120 font-200 font-sans font-bold text-[#b7b7b7ff]">
-                        Student Manager
+            <div className='absolute z-10 wh-full bg-black op-20'></div>
+            <main className="relative flex-col h-200 w-240 bg-[#2a2a2aff] overflow-hidden">
+                <div className="relative z-100 py5 px10 flex justify-between items-center bg-[#1a1a1aff]">
+                    <h2 className="m0 font-200 font-sans font-bold text-[#b7b7b7ff]">
+                        {t("title")}
                     </h2>
-                    <button className="mr-5 w9 h9 bg-[#2a2a2aff] border-none flex-c-c cursor-pointer">
-                        <MdDarkMode className="text-[#b7b7b7ff] text-4" />
-                    </button>
-                    <button className="mr-5 w9 h9 bg-[#2a2a2aff] border-none flex-c-c cursor-pointer">
-                        <MdLanguage className="text-[#b7b7b7ff] text-5" />
-                    </button>
-                    <button className="w9 h9 bg-[#2a2a2aff] border-none flex-c-c cursor-pointer" onClick={handleLogout}>
-                        <MdLogout className="text-[#b7b7b7ff] text-5" />
-                    </button>
+                    <div className="flex">
+                        <button className="mr-5 w9 h9 bg-[#2a2a2aff] border-none flex-c-c cursor-pointer" onClick={handleTheme}>
+                            <MdDarkMode className="text-[#b7b7b7ff] text-4 hover:text-[#4aab1fff]" />
+                        </button>
+                        <button className="mr-5 w9 h9 bg-[#2a2a2aff] border-none flex-c-c cursor-pointer" onClick={handleLanguage}>
+                            <MdLanguage className="text-[#b7b7b7ff] text-5 hover:text-[#4aab1fff]" />
+                        </button>
+                        <button className="w9 h9 bg-[#2a2a2aff] border-none flex-c-c cursor-pointer" onClick={handleLogout}>
+                            <MdLogout className="text-[#b7b7b7ff] text-5 hover:text-[#4aab1fff]" />
+                        </button>
+                    </div>
                 </div>
                 <div className="relative z-20 flex-1 mx10 my5">
                     <div className="relative w-full h9 flex justify-between">
@@ -120,36 +135,36 @@ export default function Home() {
                             onSubmit={handleSearch}
                         >
                             <button className="w9 h9 border-none bg-transparent flex-c-c" type="submit">
-                                <MdSearch className="text-[#ffffff] text-5 cursor-pointer"  />
+                                <MdSearch className="text-[#ffffff] text-5 cursor-pointer hover:text-[#4aab1fff]"  />
                             </button>
                             <input
                                 className="bg-transparent border-none outline-none text-[#d0d0d0ff] p0 m0"
                                 type="search"
                                 name="search"
-                                placeholder="Search with name"
+                                placeholder={t(`searchText`)}
                             />
                         </form>
                         <div className="flex">
                             <button className="w9 h9 mr5 box-border bg-transparent border-solid border-1.5 border-[#494949ff] flex-c-c" onClick={handleRefresh}>
-                                <MdRefresh className="text-[#b7b7b7ff] text-5 cursor-pointer" />
+                                <MdRefresh className="text-[#b7b7b7ff] text-5 cursor-pointer hover:text-[#4aab1fff]" />
                             </button>
                             <button className="w9 h9 mr5 box-border bg-transparent border-solid border-1.5 border-[#494949ff] flex-c-c" onClick={handleAddBox}>
-                                <MdAdd className="text-[#b7b7b7ff] text-5 cursor-pointer" />
+                                <MdAdd className="text-[#b7b7b7ff] text-5 cursor-pointer hover:text-[#4aab1fff]" />
                             </button>
                             <button className="w9 h9 box-border bg-transparent border-solid border-1.5 border-[#494949ff] flex-c-c" onClick={handleExport}>
-                                <MdImportExport className="text-[#b7b7b7ff] text-5 cursor-pointer" />
+                                <MdImportExport className="text-[#b7b7b7ff] text-5 cursor-pointer hover:text-[#4aab1fff]" />
                             </button>
                         </div>
                     </div>
                     <div className="h-154 overflow-y-scroll scrollbar-hide mt-8">
                         <table className="relative w-full text-[#ddddddff]">
                             <thead>
-                                <tr className="h8 bg-[#606060]">
-                                    <th className="w20">ID</th>
-                                    <th className="w60">Name</th>
-                                    <th className="w20">Age</th>
-                                    <th>Major</th>
-                                    <th className="w30">Command</th>
+                                <tr className="h9 bg-[#606060]">
+                                    <th className="w20">{t(`tableId`)}</th>
+                                    <th className="w60">{t(`tableName`)}</th>
+                                    <th className="w20">{t(`tableAge`)}</th>
+                                    <th>{t(`tableMajor`)}</th>
+                                    <th className="w30">{t(`tableCommand`)}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -168,8 +183,12 @@ export default function Home() {
                                             <td className="text-center">{student.age}</td>
                                             <td className="text-center">{student.major}</td>
                                             <td className="flex-c-c">
-                                                <button className="h7 bg-transparent text-[#d0d0d0] border-none cursor-pointer" onClick={handleEdit}>Edit</button>
-                                                <button className="h7 bg-transparent text-[#d0d0d0] border-none cursor-pointer" onClick={handleDelete}>Delete</button>
+                                                <button className="h7 bg-transparent text-[#d0d0d0] border-none cursor-pointer hover:text-[#4aab1fff]" onClick={handleEdit}>
+                                                    {t(`tableEdit`)}
+                                                </button>
+                                                <button className="h7 bg-transparent text-[#d0d0d0] border-none cursor-pointer hover:text-[#4aab1fff]" onClick={handleDelete}>
+                                                    {t(`tableDelete`)}
+                                                </button>
                                             </td>
                                         </tr>
                                     )
